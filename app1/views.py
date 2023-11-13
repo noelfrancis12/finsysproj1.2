@@ -42549,16 +42549,28 @@ def cash_in_hand(request):
     loan = loan_transaction.objects.filter(cid=cmp1)
     getloan = loan_transaction.objects.filter(to_trans='cash')
     toloan = loan_transaction.objects.filter(from_trans='cash')
-    
+    pordr= purchaseorder.objects.filter(payment_type='CASH')
+    sordr= salesorder.objects.filter(pay_method='cash')
+    payrec= payment.objects.filter(pmethod='cash')
+    bill= purchasebill.objects.filter(payment_type='CASH')
+    dbtnt= purchasedebit.objects.filter(payment_type='Cash')
+    rcrbl= recurring_bill.objects.filter(payment_method='CASH')
     context = {
         'cmp1': cmp1,
         'bnk': bnk,
         'loan': loan,
         'getloan': getloan,
         'toloan': toloan,
+        'pordr':pordr,
+        'sordr':sordr,
+        'payrec':payrec,
+        'bill':bill,
+        'dbtnt':dbtnt,
+        'rcrbl':rcrbl,
     }
     
     return render(request, 'app1/cash_in_hand.html', context)
+
 
 
 def add_cash(request):
@@ -42622,9 +42634,29 @@ def cash_statement(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     
     bnk=bank_transactions.objects.filter(cid=cmp1)
+    loan = loan_transaction.objects.filter(cid=cmp1)
+    getloan = loan_transaction.objects.filter(to_trans='cash')
+    toloan = loan_transaction.objects.filter(from_trans='cash')
+    pordr= purchaseorder.objects.filter(payment_type='CASH')
+    sordr= salesorder.objects.filter(pay_method='cash')
+    empln= EmployeeLoan.objects.all()
+    payrec= payment.objects.filter(pmethod='cash')
+    bill= purchasebill.objects.filter(payment_type='CASH')
+    dbtnt= purchasedebit.objects.filter(payment_type='Cash')
+    rcrbl= recurring_bill.objects.filter(payment_method='CASH')
     context={
         'cmp1':cmp1,
         'bnk':bnk,
+        'loan': loan,
+        'getloan': getloan,
+        'toloan': toloan,
+        'pordr':pordr,
+        'sordr':sordr,
+        'empln':empln,
+        'payrec':payrec,
+        'bill':bill,
+        'dbtnt':dbtnt,
+        'rcrbl':rcrbl,
 
     }
     return render(request,'app1/cash_statement.html',context)
@@ -47622,10 +47654,12 @@ def create_loan(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     loan=loan_account.objects.filter(cid=cmp1)
     bank=bankings_G.objects.filter(cid=cmp1)
+    accounts = BankAccount.objects.all()
     context={
         'cmp1':cmp1,
         'loan':loan,
         'bank':bank,
+        'accounts':accounts,
     }
     return render(request,'app1/loan_creat.html',context)
     
