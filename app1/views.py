@@ -42586,7 +42586,7 @@ def add_cash(request):
             cash_description=desc,
             cash_date=adj_date,
             cid=cmp1,
-            
+            balance=0,  
         )
         if cashadj == 'ADD CASH':
             cmp1.cash += int(amount)
@@ -42594,6 +42594,7 @@ def add_cash(request):
         else :
             cmp1.cash -= int(amount)
             cmp1.save()
+        bnk.balance = amount if cashadj == 'ADD CASH' else -int(amount)
         bnk.save()
         
     return redirect('cash_in_hand')
@@ -48024,15 +48025,15 @@ def crt_loan_trans(request, id):
             received_bank.save()
             
             # Add the payment amount to the lender bank (if not cash)
-        if loan.lenderbank == 'cash':
-            cid.cash += principal
-            cid.save()
-        else:
-            lender_bank = bankings_G.objects.get(bankname=loan.lenderbank)
-            lender_bank.balance += principal
-            print('done')
-            print(lender_bank)
-            lender_bank.save()
+        # if loan.lenderbank == 'cash':
+        #     cid.cash += principal
+        #     cid.save()
+        # else:
+        #     lender_bank = bankings_G.objects.get(bankname=loan.lenderbank)
+        #     lender_bank.balance += principal
+        #     print('done')
+        #     print(lender_bank)
+        #     lender_bank.save()
                 
         
         # Update the loan account balance

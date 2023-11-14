@@ -2141,6 +2141,7 @@ class bank_transactions(models.Model):
     cash_cash=models.IntegerField(blank=True,null=True)
     cash_description=models.TextField(max_length=100)
     cash_date=models.DateField(blank=True,null=True)
+    balance=models.IntegerField(blank=True,null=True)
     banking=models.ForeignKey(bankings_G, on_delete=models.CASCADE ,null=True,blank=True)
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
     
