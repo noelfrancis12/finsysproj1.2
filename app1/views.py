@@ -36651,13 +36651,15 @@ def createpurchasedebit(request):
                                 )
             if payment_type == 'Cash':
                  cmp1.cash += float(balance_amount)
-                 cmp1.save()
+                 pdebit.balance_amount = cmp1.cash
+                 cmp1.save() 
             else:
                   received_bank = bankings_G.objects.get(bankname=payment_type)
                   received_bank.balance += float(balance_amount)
                   received_bank.save()
-
-          
+           
+        
+            
             pdebit.save()
             
 
@@ -42586,15 +42588,16 @@ def add_cash(request):
             cash_description=desc,
             cash_date=adj_date,
             cid=cmp1,
-            balance=0,  
+            # balance=0,  
         )
         if cashadj == 'ADD CASH':
             cmp1.cash += int(amount)
-            cmp1.save()
-        else :
+            bnk.balance = cmp1.cash  
+        else:
             cmp1.cash -= int(amount)
-            cmp1.save()
-        bnk.balance = amount if cashadj == 'ADD CASH' else -int(amount)
+            bnk.balance = cmp1.cash
+        
+        cmp1.save() 
         bnk.save()
         
     return redirect('cash_in_hand')

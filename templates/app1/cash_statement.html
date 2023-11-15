@@ -224,23 +224,43 @@
         @media print {
     body * {
         visibility: hidden;
+        
     }
-
+    
     #whatToPrint,
     #whatToPrint * {
         visibility: visible;
+        position: relative;
+        top: 0;
+        z-index:10 ;
+        left: 3pt;
+        margin: -10px 0 0 0;
+        
+        .bbb{
+       color: #000;
+    }
+    /* .ribbon .ribbon-inner {
+            text-align: center;
+            color: #fff;
+            top: -20px;
+            left: -90px;
+            width: 120px;
+            padding: 3px;
+            position: relative;
+            transform: rotate(-45deg);
+        }
+        .ribbon .ribbon-open {
+            background-color: #268ddd;
+            border-color: #1c72b4;
+        } */
     }
 
-    #whatToPrint {
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
+   
     @page {
         size: A4;
         margin: 0;
     }
-    
+   
 }
     </style>
 
@@ -253,19 +273,16 @@
                     <center><h2 class="mb-0">CASH STATEMENT</h2></center>
                     <hr>
                     <div class="right" style="display: flex; align-items: center;">
-                        <button class="btn toPDF btn-outline-info">pdf</button>&nbsp;
-                        <button class="btn btn_print btn-outline-info" onclick="printSection('whatToPrint')">Print</button>
-                    
-                        <li class="nav-item dropdown mb-3" style="list-style: none; margin-top: 5px;"> <!-- Adjust margin-top as needed -->
-                            <a class="nav-link dropdown-toggle text-light btn btn-outline-info btn-sm mx-1" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="align-self: flex-start;"> <!-- Added align-self -->
-                                <i class="fa fa-share-alt  " style="font-size: medium;"> Share</i> 
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item fa fa-email">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
-                                <a class="dropdown-item" href="">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
-                            </div>
-                        </li>
+                        <button class="btn toPDF btn-outline-info" style="padding: 10px; cursor: pointer; ">pdf</button>&nbsp;
+                        <button class="btn btn_print btn-outline-info" onclick="printSection('whatToPrint')" style="padding: 10px; cursor: pointer; ">Print</button>&nbsp;
+                        <li  class=" dropdown-toggle btn btn-outline-info text-grey    " style="padding: 10px; cursor: pointer; " onclick="uplodfile()" data-toggle="dropdown"> &nbsp;Share&nbsp;</li>
+                        <ul class="dropdown-menu" style="background-color: black;">
+            
+                            <li style="margin-left: 50px;"  ></i>{% post_to_facebook object_or_url "Facebook!" %}</li>
+                            <li style="margin-left: 50px;" > {% post_to_whatsapp object_or_url "WhatsApp" %}</li>
+                            <li style="margin-left: 50px;" >{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "Email" %}</li>
+                            
+                        </ul>
                     </div>
                     
                 </div>
@@ -321,7 +338,7 @@
                                         
                                     </div>
                                     <div class="col-3">
-                                        <p> Balance</p>
+                                        <p class="bbb"> Balance</p><br>
                                         <h5>{{cmp1.cash}}</h5>
                                         
                                     </div>
@@ -443,7 +460,7 @@
                                         <td>{{a.debitdate}}</td>
                                         <td>DEBIT NOTE</td>
                                         <td>{{a.vendor}}</td>
-                                        <td>{{a.paid_amount}}</td>
+                                        <td>{{a.grandtotal}}</td>
                                         <td>{{a.balance_amount}}</td>
                                        
                                     </tr>
@@ -605,15 +622,15 @@ $(document).ready(function () {
 <script>  
     function printSection(sectionId) {
     var printContents = document.getElementById(sectionId).innerHTML;
-    var originalContents = document.body.innerHTML;
+    // var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents;printSection
+    // document.body.innerHTML = printContents;printSection
 
     window.print();
    
 
-    document.body.innerHTML = originalContents;
-    window.location.reload();
+    // document.body.innerHTML = originalContents;
+    // window.location.reload();
 }
 </script>
 
