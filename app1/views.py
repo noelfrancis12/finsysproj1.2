@@ -34272,7 +34272,10 @@ def createpurchaseorder(request):
 
             if len(request.FILES) != 0:
                 porder.file=request.FILES['file'] 
-
+            if payment_type == 'CASH':
+                cmp1.cash -= paid_amount
+                cmp1.save()
+        
             porder.save()
             porder.puchaseorder_no = int(porder.puchaseorder_no) + porder.porderid
             porder.save()
@@ -34956,6 +34959,11 @@ def createbill(request):
             billed.bill_no = int(billed.bill_no) + billed.billid
             billed.save()
 
+            if payment_type == 'Cash':
+                cmp1.cash -= int(paid_amount)
+                cmp1.save()
+            
+            
             statment2=vendor_statment()
             statment2.vendor = billed.vendor_name
             statment2.cid = cmp1
@@ -36650,9 +36658,8 @@ def createpurchasedebit(request):
                                                             
                                 )
             if payment_type == 'Cash':
-                 cmp1.cash += float(balance_amount)
-                 pdebit.balance_amount = cmp1.cash
-                 cmp1.save() 
+                 cmp1.cash += float(paid_amount)
+                 cmp1.save()
             else:
                   received_bank = bankings_G.objects.get(bankname=payment_type)
                   received_bank.balance += float(balance_amount)
@@ -42557,6 +42564,7 @@ def cash_in_hand(request):
     bill= purchasebill.objects.filter(payment_type='CASH')
     dbtnt= purchasedebit.objects.filter(payment_type='Cash')
     rcrbl= recurring_bill.objects.filter(payment_method='CASH')
+    empln= EmployeeLoan.objects.filter(payment_method='cash')
     context = {
         'cmp1': cmp1,
         'bnk': bnk,
@@ -42569,6 +42577,7 @@ def cash_in_hand(request):
         'bill':bill,
         'dbtnt':dbtnt,
         'rcrbl':rcrbl,
+        'empln':empln,
     }
     
     return render(request, 'app1/cash_in_hand.html', context)
@@ -42592,12 +42601,10 @@ def add_cash(request):
         )
         if cashadj == 'ADD CASH':
             cmp1.cash += int(amount)
-            bnk.balance = cmp1.cash  
-        else:
+            cmp1.save()
+        else :
             cmp1.cash -= int(amount)
-            bnk.balance = cmp1.cash
-        
-        cmp1.save() 
+            cmp1.save()
         bnk.save()
         
     return redirect('cash_in_hand')
@@ -45078,7 +45085,7 @@ def createrecurringbill(request):
                 bill.status = 'Draft'
                 bill.save()
             if payment_method == 'cash':
-                cmp1.cash -= int(grand_total)
+                cmp1.cash -= int(paid_amount)
                 cmp1.save()
             elif payment_method == 'upi':
                  bill.upi_no = upi

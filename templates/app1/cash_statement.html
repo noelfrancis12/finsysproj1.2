@@ -221,7 +221,7 @@
             background-color:#000000;
             height: 1px;
         }
-        @media print {
+        /* @media print {
     body * {
         visibility: hidden;
         
@@ -239,20 +239,7 @@
         .bbb{
        color: #000;
     }
-    /* .ribbon .ribbon-inner {
-            text-align: center;
-            color: #fff;
-            top: -20px;
-            left: -90px;
-            width: 120px;
-            padding: 3px;
-            position: relative;
-            transform: rotate(-45deg);
-        }
-        .ribbon .ribbon-open {
-            background-color: #268ddd;
-            border-color: #1c72b4;
-        } */
+   
     }
 
    
@@ -261,6 +248,27 @@
         margin: 0;
     }
    
+} */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #whatToPrint,
+    #whatToPrint * {
+        visibility: visible;
+    }
+
+    #whatToPrint {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    
 }
     </style>
 
@@ -360,7 +368,7 @@
                                         
                                         <!-- <th>DESCRIPTION</th> -->
                                         <th>AMOUNT</th>
-                                        <th>BALANCE</th>
+                                        
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -384,7 +392,7 @@
                                             <td>- {{a.cash_cash}}</td>
                                             
                                             {% endif %}
-                                            <td>{{a.balance}}</td>
+                                           
                                 {% endif %}
                                 
                                         </tr>
@@ -450,7 +458,7 @@
                                         <td>BILL</td>
                                         <td>{{a.vendor_name}}</td>
                                         <td>-{{a.paid_amount}}</td>
-                                        <td>{{a.balance_amount}}</td>
+                                        
                                         
                                     </tr>
                                     {% endfor %} 
@@ -460,8 +468,8 @@
                                         <td>{{a.debitdate}}</td>
                                         <td>DEBIT NOTE</td>
                                         <td>{{a.vendor}}</td>
-                                        <td>{{a.grandtotal}}</td>
-                                        <td>{{a.balance_amount}}</td>
+                                        <td>{{a.paid_amount}}</td>
+                                       
                                        
                                     </tr>
                                     {% endfor %} 
@@ -471,8 +479,8 @@
                                         <td>{{a.start_date}}</td>
                                         <td>RECURRING BILL</td>
                                         <td>{{a.vendor_name}}</td>
-                                        <td>-{{a.grand_total}}</td>
-                                        <td>{{a.balance}}</td>
+                                        <td>{{a.paid_amount}}</td>
+                                       
                                        
                                         
                                     </tr>
@@ -486,7 +494,7 @@
                             <td>{{i.type}}</td>
                             <!-- <td>{{i.loan_desc}}</td> -->
                             <td>{{i.loan_amount}}</td>
-                            <td>{{i.total}}</td>
+                            
                         </tr>
                         {% endfor %}
                         {% for i in getloan %}
@@ -497,7 +505,7 @@
                             <td>{{i.type}}</td>
                             <!-- <td>{{i.loan_desc}}</td> -->
                             <td>{{i.loan_amount}}</td>
-                            <td>{{i.total}}</td>
+                           
                         </tr>
                         {% endfor %}
                                   

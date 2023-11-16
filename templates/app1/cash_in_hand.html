@@ -289,12 +289,12 @@
                          
                     </tr>
                     {% endfor %} -->
-                    <!-- <tr>
+                    <tr>
                         {% for a in empln %}
                         <td>{{a.LoanDate}}</td>
                         <td>EMPLOYEE LOAN</td>
                         <td>{{a.employee.firstname}}</td>
-                        <td>{{a.LoanAmount}}</td>
+                        <td>-{{a.LoanAmount}}</td>
                         <td>
                             <div class="dropdown">
                                 <i class="fa fa-ellipsis-v" style="font-size:24px" data-toggle="dropdown"></i>
@@ -305,7 +305,7 @@
                             </div>
                         </td>
                         {% endfor %} 
-                    </tr> -->
+                    </tr>
                     <!-- {% for a in payrec %}
                     <tr>
                         
@@ -350,7 +350,7 @@
                         <td>{{a.debitdate}}</td>
                         <td>DEBIT NOTE</td>
                         <td>{{a.vendor}}</td>
-                        <td>{{a.grandtotal}}</td>
+                        <td>{{a.paid_amount}}</td>
                         <td>
                             <div class="dropdown">
                                 <i class="fa fa-ellipsis-v" style="font-size:24px" data-toggle="dropdown"></i>
@@ -369,7 +369,7 @@
                         <td>{{a.start_date}}</td>
                         <td>RECURRING BILL</td>
                         <td>{{a.vendor_name}}</td>
-                        <td>-{{a.balance}}</td>
+                        <td>-{{a.paid_amount}}</td>
                         <td>
                             <div class="dropdown">
                                 <i class="fa fa-ellipsis-v" style="font-size:24px" data-toggle="dropdown"></i>
