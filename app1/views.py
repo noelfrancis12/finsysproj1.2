@@ -48047,7 +48047,7 @@ def crt_loan_trans(request, id):
                 
         
         # Update the loan account balance
-        loan.balance -= principal
+        loan.balance -= total
         loan.save()
         
         # Create a transaction record
@@ -48067,7 +48067,7 @@ def crt_loan_trans(request, id):
         )
         transaction.save()
 
-    return redirect('loan')
+    return redirect('loan_list',id)
 
 def delet_loan(request, id):
     cid = company.objects.get(id=request.session["uid"])
@@ -48133,23 +48133,23 @@ def edit_loan_payment(request, id):
         if received_from == 'cash':
             cid.cash -= principal_difference
             cid.save()
-        else:
-            received_from_bank = bankings_G.objects.get(bankname=received_from)
-            received_from_bank.balance -= principal_difference
-            received_from_bank.save()
+        # else:
+        #     received_from_bank = bankings_G.objects.get(bankname=received_from)
+        #     received_from_bank.balance -= principal_difference
+        #     received_from_bank.save()
         
         # Handle balance adjustments for lender bank (if not cash)
-        if loan.to_trans != 'cash':
-            lender_bank = bankings_G.objects.get(bankname=loan.to_trans)
-            lender_bank.balance += principal_difference
-            lender_bank.save()
-        else:
-            cid.cash += principal_difference
-            cid.save()
+        # if loan.to_trans != 'cash':
+        #     lender_bank = bankings_G.objects.get(bankname=loan.to_trans)
+        #     lender_bank.balance += principal_difference
+        #     lender_bank.save()
+        # else:
+        #     cid.cash += principal_difference
+        #     cid.save()
         # Create a transaction record
         
 
-        return redirect('loan')  # Redirect to the appropriate URL after editing
+        return redirect('loan_list',id)  # Redirect to the appropriate URL after editing
 
     return render(request, 'edit_loan_transaction.html', {'loan': loan})
     
@@ -48310,10 +48310,10 @@ def delete_loan_payment(request, id):
         # Increase company's cash balance
         cid.cash += amount
         cid.save()
-        to_trans_bank = bankings_G.objects.get(bankname=to_trans)
-        to_trans_bank.balance -= amount
-        print('doncash')
-        to_trans_bank.save()
+        # to_trans_bank = bankings_G.objects.get(bankname=to_trans)
+        # to_trans_bank.balance -= amount
+        # print('doncash')
+        # to_trans_bank.save()
     else:
         cid.cash -= amount
         cid.save()
@@ -48329,7 +48329,7 @@ def delete_loan_payment(request, id):
     # Delete the loan transaction
     dl_loan.delete()
 
-    return redirect('loan')
+    return redirect('loan_list',id)
     
     
 def edit_transaction(request,id):
