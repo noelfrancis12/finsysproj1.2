@@ -47683,13 +47683,13 @@ def create_loan_account(request):
         account_number = request.POST.get('acc_number')
         lenderbank = request.POST.get('lender')
         received_bank = request.POST.get('recieved')
-        interest = request.POST.get('intrest')
+        interest = request.POST.get('intrest',0)
         term = request.POST.get('term')
         loan_amount = int(request.POST.get('balance'))
-        processing = int(request.POST.get('processing'))
+        processing = int(request.POST.get('processing',0))
         paid = request.POST.get('paid')
         status = "Active"
-        desc = request.POST.get('desc')
+        desc = request.POST.get('desc','')
         date = request.POST.get('date')
         balance = loan_amount
         recieved_amount = loan_amount -processing
@@ -48149,7 +48149,7 @@ def edit_loan_payment(request, id):
         # Create a transaction record
         
 
-        return redirect('loan_list',id)  # Redirect to the appropriate URL after editing
+        return redirect('loan_list',loan_id_global)  # Redirect to the appropriate URL after editing
 
     return render(request, 'edit_loan_transaction.html', {'loan': loan})
     
@@ -48329,7 +48329,7 @@ def delete_loan_payment(request, id):
     # Delete the loan transaction
     dl_loan.delete()
 
-    return redirect('loan_list',id)
+    return redirect('loan_list',loan_id_global)
     
     
 def edit_transaction(request,id):
