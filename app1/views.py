@@ -47686,12 +47686,13 @@ def create_loan_account(request):
         interest = request.POST.get('intrest',0)
         term = request.POST.get('term')
         loan_amount = int(request.POST.get('balance'))
-        processing = int(request.POST.get('processing',0))
+        processing_value = request.POST.get('processing', '0')
+        processing = int(processing_value) if processing_value.isdigit() else 0
         paid = request.POST.get('paid')
         status = "Active"
         desc = request.POST.get('desc','')
         date = request.POST.get('date')
-        balance = loan_amount
+        balance = loan_amount + processing
         recieved_amount = loan_amount -processing
         # Handle lender, received bank, and processing bank options
         # if lenderbank == 'cash':
@@ -47823,8 +47824,8 @@ def edit_loan(request,id):
     cid = company.objects.get(id=request.session["uid"])
     loan=loan_account.objects.get(id=id)
     bank=bankings_G.objects.filter(cid=cid)
-
-    return render(request,'app1/loan_edit.html',{'loan':loan,'cmp1':cid,'bank':bank})
+    accounts=BankAccount.objects.all()
+    return render(request,'app1/loan_edit.html',{'loan':loan,'cmp1':cid,'bank':bank,'accounts':accounts})
     
     
 def edit_loan_account(request, id):
@@ -47864,11 +47865,13 @@ def edit_loan_account(request, id):
         loan.intrest = request.POST.get('intrest')
         loan.term = request.POST.get('term')
         loan.loan_amount = int(request.POST.get('balance'))
-        loan.processing = int(request.POST.get('processing'))
+        processing_value = request.POST.get('processing', 0)
+        loan.processing = int(processing_value) if processing_value.isdigit() else 0
+
         loan.status = "Active"
         loan.desc = request.POST.get('desc')
         loan.date = request.POST.get('date')
-        loan.balance = loan.loan_amount
+        loan.balance = loan.loan_amount + loan.processing
         loan.received_amount = loan.loan_amount - loan.processing
 
         # Save the updated loan account
@@ -48301,9 +48304,10 @@ def delete_loan_payment(request, id):
     from_trans = dl_loan.from_trans
     to_trans = dl_loan.to_trans
     amount = dl_loan.loan_amount
+    total_amount = dl_loan.total
     print(dl_loan.from_trans)
     dl_acc = loan_account.objects.get(id=dl_loan.loan_id)
-    dl_acc.balance += amount
+    dl_acc.balance += total_amount
     dl_acc.save()
     # Update company cash and bank balances
     if dl_loan.from_trans == 'CASH':
