@@ -48019,7 +48019,7 @@ def crt_loan_trans(request, id):
     if request.method == 'POST':
         principal = int(request.POST.get('principal'))
         date = request.POST.get('date')
-        intrest = request.POST.get('interest')
+        intrest = request.POST.get('interest',0)
         total = int(request.POST.get('total'))
         received_from = request.POST.get('recieved')
         print(id)
@@ -48115,26 +48115,21 @@ def edit_loan_payment(request, id):
         bank = bankings_G.objects.filter(cid=cid)
 
         # Calculate the difference in principal amount for balance adjustment
-        principal_difference = loan.balance - int(principal)
+        principal_difference = loan.loan_amount - loan.total
         # Update the loan transaction record
         loan.loan_amount = principal
         loan.loan_date = date
         loan.loan_intrest = intrest
         loan.recieved_bank = received_from
-        loan.balance += bal
         loan.total = total
         loan.save()
-        ac.balance  += bal
-        ac.save()
-        loan.balance -= principal_difference
-        
-        
-        loan.save()
-        ac.balance  -= int(principal)
+
+        # Handle balance adjustments based on the difference in principal
+        ac.balance -= principal_difference
         ac.save()
         # Handle balance adjustments based on received_from
         if received_from == 'cash':
-            cid.cash -= principal_difference
+            cid.cash -= loan.total
             cid.save()
         # else:
         #     received_from_bank = bankings_G.objects.get(bankname=received_from)

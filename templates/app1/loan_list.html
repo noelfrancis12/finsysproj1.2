@@ -119,7 +119,8 @@
                                 
                                 
                                 <td>{{a.loan_amount}}</td>
-                                <td>{{a.loan_intrest}}</td>
+                                <td>{{a.loan_intrest|default:0}}</td>
+
                                 <td>{{a.total}}</td>
                                 <td>
                                     <div class="dropdown">
