@@ -48114,7 +48114,7 @@ def edit_loan_payment(request, id):
         principal = request.POST.get('principal')
         bank = bankings_G.objects.filter(cid=cid)
 
-        # Calculate the difference in principal amount for balance adjustment
+        # Calculate the difference in principal amount for balance adjustments
         principal_difference = loan.loan_amount - loan.total
         # Update the loan transaction record
         loan.loan_amount = principal
