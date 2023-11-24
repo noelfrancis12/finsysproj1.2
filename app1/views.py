@@ -42640,7 +42640,6 @@ def delet_bnk(request,id):
         
     return redirect('cash_in_hand')
 
-
 def cash_statement(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     
