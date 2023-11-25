@@ -48103,6 +48103,7 @@ def edit_loan_payment(request, id):
     bal=loan.balance
     l=loan.loan_id
     ac=loan_account.objects.get(id=l)
+    loan_id=loan.loan
     print(ac.balance)
     if request.method == 'POST':
         principal = int(request.POST.get('principal'))
@@ -48114,17 +48115,27 @@ def edit_loan_payment(request, id):
         bank = bankings_G.objects.filter(cid=cid)
 
         # Calculate the difference in principal amount for balance adjustments
-        principal_difference = loan.loan_amount - loan.total
+        # principal_difference = int(ac.loan_amount) + int(ac.processing) 
         # Update the loan transaction record
         loan.loan_amount = principal
         loan.loan_date = date
         loan.loan_intrest = intrest
         loan.recieved_bank = received_from
         loan.total = total
+        # if loan.total >= total:
+        #    # Handle balance adjustments based on the difference in principal
+        #     ac.balance -= principal_difference
+        #     ac.save()  
+        # else:
+             # Handle balance adjustments based on the difference in principal
+        # 
         loan.save()
-
-        # Handle balance adjustments based on the difference in principal
-        ac.balance -= principal_difference
+        loans_sum=loan_transaction.objects.filter(loan_id=loan_id)
+        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("total"))["total__sum"]
+        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("total"))["total__sum"]
+        print(total_sum)
+        print(emi_sum)
+        ac.balance = total_sum - emi_sum
         ac.save()
         # Handle balance adjustments based on received_from
         if received_from == 'cash':
@@ -48146,7 +48157,7 @@ def edit_loan_payment(request, id):
         # Create a transaction record
         
 
-        return redirect('loan_list',loan_id_global)  # Redirect to the appropriate URL after editing
+        return redirect('loan_list',l)  # Redirect to the appropriate URL after editing
 
     return render(request, 'edit_loan_transaction.html', {'loan': loan})
     
