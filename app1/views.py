@@ -47724,7 +47724,7 @@ def create_loan_account(request):
             processing_bank.balance -= processing
             processing_bank.save()
         
-        # Create the loan account entry
+        # Create the loan account entryy
         
         loan = loan_account(
                 account_name=account_name,
