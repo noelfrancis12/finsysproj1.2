@@ -42633,7 +42633,7 @@ def delet_bnk(request,id):
 
             bnk.save()
         
-    cmp1.cash = bank_transactions.objects.exclude(id=id).aggregate(Sum('cash_cash'))['cash_cash__sum']
+    # cmp1.cash = bank_transactions.objects.exclude(id=id).aggregate(Sum('cash_cash'))['cash_cash__sum']
     cmp1.save()
     bk.delete()
     
@@ -42699,7 +42699,7 @@ def edit_add_cash(request,id):
             cmp1.save()
         else :
             cmp1.cash -= int(amount)
-            
+            cmp1.save()
         item.save()
 
     return redirect('cash_in_hand')
@@ -47716,7 +47716,7 @@ def create_loan_account(request):
         
         if paid == 'cash':
             processing_bankname = 'cash'
-            cid.cash -= processing
+            # cid.cash -= processing
             cid.save()
         else:
             processing_bank = bankings_G.objects.get(bankname=paid)
