@@ -47874,9 +47874,11 @@ def edit_loan_account(request, id):
         loan.received_amount = loan.loan_amount - loan.processing
 
         # Save the updated loan account
+        
+        
+       
+        # ac.save()
         loan.save()
-
-
         # Check if lender is cash
         # if loan.lenderbank == 'cash':
         #     cash -= loan.balance   # Subtract the new loan amount
@@ -47946,7 +47948,18 @@ def edit_loan_account(request, id):
                     transaction.total = loan.processing
                     transaction.save()
 
+         
                 # Redirect to the loan list page or show a success message
+        print(loan.id)
+        loan_id=loan.id
+        loans_sum=loan_transaction.objects.filter(loan=loan_id)
+        print(loans_sum)
+        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("total"))["total__sum"]
+        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("total"))["total__sum"]
+        print(total_sum)
+        print(emi_sum)
+        loan.balance = total_sum - emi_sum
+        loan.save()
         return redirect('loan')
 
     # Handle GET request and render the edit form
