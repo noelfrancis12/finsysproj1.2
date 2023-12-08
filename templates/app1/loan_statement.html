@@ -389,13 +389,14 @@
                                         <!-- <th>NAME</th>
                                         
                                         <th>DESCRIPTION</th> -->
-                                        <th>BALANCE</th>
+                                        <th>TOTAL AMOUNT</th>
                                         <!-- <th>CLOSING BAL</th> -->
                                     </tr>
                                     </thead>
                                     <tbody>
                                    
                                {% for a in bnk %}
+                               
                                         <tr>
                                             {% if a.type == 'LOAN ADJ'   %}
                                             <td>{{a.loan_date}}</td>
@@ -417,7 +418,7 @@
                                             <td>{{a.type}}</td>
                                             {% endif %} -->
                                             <td>{{ a.loan_amount }}</td> <!-- Displaying loan amount from loan_transaction model -->
-                                            <td>{{ a.loan_intrest }}</td>
+                                            <td>{{a.loan_intrest|default:0}}</td>
                                             <!-- {% if a.type == 'LOAN ADJ' %}
                                             <td>{{a.loan_desc}}</td>
                                             {% elif a.type == 'LOAN APPROVED' %}
