@@ -48062,7 +48062,7 @@ def crt_loan_trans(request, id):
                 
         
         # Update the loan account balance
-        loan.balance -= total
+        loan.balance -= principal
         loan.save()
         
         # Create a transaction record
