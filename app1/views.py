@@ -48144,8 +48144,8 @@ def edit_loan_payment(request, id):
         # 
         loan.save()
         loans_sum=loan_transaction.objects.filter(loan_id=loan_id)
-        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("total"))["total__sum"]
-        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("total"))["total__sum"]
+        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("loan_amount"))["loan_amount__sum"]
+        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("loan_amount"))["loan_amount__sum"]
         print(total_sum)
         print(emi_sum)
         ac.balance = total_sum - emi_sum
@@ -48325,7 +48325,7 @@ def delete_loan_payment(request, id):
     total_amount = dl_loan.total
     print(dl_loan.from_trans)
     dl_acc = loan_account.objects.get(id=dl_loan.loan_id)
-    dl_acc.balance += total_amount
+    dl_acc.balance += amount
     dl_acc.save()
     # Update company cash and bank balances
     if dl_loan.from_trans == 'CASH':
