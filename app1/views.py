@@ -48214,7 +48214,7 @@ def loan_pdf(request,id):
 
     cmp1 = company.objects.get(id=request.session["uid"])
     
-    bnk=bank_transactions.objects.filter(loan_id=id)
+    bnk=loan_transaction.objects.filter(loan_id=id)
 
     loan=loan_account.objects.get(id=id)
     
