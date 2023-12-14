@@ -47954,8 +47954,8 @@ def edit_loan_account(request, id):
         loan_id=loan.id
         loans_sum=loan_transaction.objects.filter(loan=loan_id)
         print(loans_sum)
-        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("total"))["total__sum"]
-        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("total"))["total__sum"]
+        total_sum=loans_sum.filter(bank_type__in=["OPENING BAL","PROCESSING FEE"]).aggregate(Sum("loan_amount"))["loan_amount__sum"]
+        emi_sum=loans_sum.filter(bank_type="EMI PAID").aggregate(Sum("loan_amount"))["loan_amount__sum"]
         print(total_sum)
         print(emi_sum)
         loan.balance = total_sum - emi_sum
